@@ -1,5 +1,5 @@
 <script>
-	import { is3d } from '$lib/3d.svelte';
+	import { is3d } from '$lib/state.svelte';
 </script>
 
 <label class="inline-flex cursor-pointer items-center">
