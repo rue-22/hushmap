@@ -10,20 +10,26 @@
 		Popup,
 		ScaleControl,
 	} from 'svelte-maplibre-gl';
-	import { is3d } from '$lib/3d.svelte';
+	import Circle from '$lib/components/Circle.svelte';
+	import { is3d } from '$lib/state.svelte';
 	// import maplibregl from 'maplibre-gl';
+	import Property from '$lib/components/Property.svelte';
 	import sampleData from '$lib/sample_data.json';
 
+	// for server load
 	// const { data } = $props();
 
-	// Popup state management using Svelte's state
-	const OFFSET = 16;
+	const OFFSET = 23;
 	const popupOffset = {
 		top: [0, OFFSET],
 		bottom: [0, -OFFSET],
 		left: [OFFSET + 12, 0],
 		right: [-OFFSET - 12, 0],
 		center: [0, 0],
+		'top-left': [OFFSET, OFFSET],
+		'top-right': [-OFFSET, OFFSET],
+		'bottom-left': [OFFSET, -OFFSET],
+		'bottom-right': [-OFFSET, -OFFSET],
 	};
 </script>
 
@@ -51,13 +57,23 @@
 		{#each sampleData.features as feature (feature.id)}
 			<Marker lnglat={feature.geometry.coordinates}>
 				{#snippet content()}
-					<span class="text-3xl">🐸</span>
+					{@const dbaRounded = Math.round(Number(feature.properties.noiseLevel))}
+					{#if Number(feature.properties.noiseLevel) < 60}
+						<Circle color="quiet-green" dbaLevel={dbaRounded} />
+					{:else if Number(feature.properties.noiseLevel) > 60 && Number(feature.properties.noiseLevel) < 69}
+						<Circle color="loud-orange" dbaLevel={dbaRounded} />
+					{:else}
+						<Circle color="very-loud-red" dbaLevel={dbaRounded} />
+					{/if}
 				{/snippet}
-				<Popup class="text-lg" offset={popupOffset}>
-					<p>Date: {feature.properties.date}</p>
-					<p>Time: {feature.properties.startTime} to {feature.properties.endTime}</p>
-					<p>Barangay: {feature.properties.brgy}</p>
-					<p>Noise Level: {feature.properties.noiseLevel} dB</p>
+				<Popup offset={popupOffset}>
+					<Property attr="Date" val={feature.properties.date} />
+					<Property attr="Barangay" val={feature.properties.brgy} />
+					<Property attr="dBA Level" val={feature.properties.noiseLevel} />
+					<Property
+						attr="Timeframe"
+						val={[feature.properties.startTime, feature.properties.endTime]}
+					/>
 					<p>Analysis: Normal ???</p>
 				</Popup>
 			</Marker>
