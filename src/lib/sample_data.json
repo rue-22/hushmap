@@ -1,0 +1,50 @@
+{
+	"type": "FeatureCollection",
+	"features": [
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [121.0634, 14.6444]
+			},
+			"properties": {
+				"date": "April 22, 2025",
+				"startTime": "4:22:23 PM",
+				"endTime": "5:22:23 PM",
+				"noiseLevel": "22.0",
+				"brgy": "Krus na Ligas"
+			},
+			"id": 1 
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [121.0642, 14.6450]
+			},
+			"properties": {
+				"date": "April 23, 2025",
+				"startTime": "5:23:22 PM",
+				"endTime": "7:22:23 PM",
+				"noiseLevel": "72.2",
+				"brgy": "Krus na Ligas"
+			},
+			"id": 2 
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [121.0626, 14.6439]
+			},
+			"properties": {
+				"date": "April 20, 2025",
+				"startTime": "12:00:01 AM",
+				"endTime": "9:01:23 AM",
+				"noiseLevel": "63.1",
+				"brgy": "Krus na Ligas"
+			},
+			"id": 3
+		}
+	]
+}
