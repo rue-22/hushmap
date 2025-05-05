@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import {
 		FillExtrusionLayer,
 		FullScreenControl,
@@ -52,29 +52,28 @@
 	<GlobeControl />
 	<ScaleControl />
 	<FullScreenControl position="top-left" />
+	<p>test</p>
 
 	<GeoJSONSource data={sampleData}>
 		{#each sampleData.features as feature (feature.id)}
 			<Marker lnglat={feature.geometry.coordinates}>
 				{#snippet content()}
-					{@const dbaRounded = Math.round(Number(feature.properties.noiseLevel))}
-					{#if Number(feature.properties.noiseLevel) < 60}
+					{@const dbaRounded = Math.round(Number(feature.properties.meanNoiseLevel))}
+					{#if Number(feature.properties.meanNoiseLevel) < 60}
 						<Circle color="quiet-green" dbaLevel={dbaRounded} />
-					{:else if Number(feature.properties.noiseLevel) > 60 && Number(feature.properties.noiseLevel) < 69}
+					{:else if Number(feature.properties.meanNoiseLevel) > 60 && Number(feature.properties.meanNoiseLevel) < 69}
 						<Circle color="loud-orange" dbaLevel={dbaRounded} />
 					{:else}
 						<Circle color="very-loud-red" dbaLevel={dbaRounded} />
 					{/if}
 				{/snippet}
 				<Popup offset={popupOffset}>
-					<Property attr="Date" val={feature.properties.date} />
 					<Property attr="Barangay" val={feature.properties.brgy} />
-					<Property attr="dBA Level" val={feature.properties.noiseLevel} />
-					<Property
-						attr="Timeframe"
-						val={[feature.properties.startTime, feature.properties.endTime]}
-					/>
-					<p>Analysis: Normal ???</p>
+					<Property attr="City" val={feature.properties.city} />
+					<Property attr="Number of sessions" val={feature.properties.noOfSessions} />
+					<Property attr="Mean dBA level" val={feature.properties.meanNoiseLevel} />
+					<span class="italic">Graph</span>:
+					<a href="/{feature.id}" target="_blank" class="underline">Click here!</a>
 				</Popup>
 			</Marker>
 		{/each}

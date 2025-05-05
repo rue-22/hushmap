@@ -3,7 +3,7 @@
 
 	let dbClass = $state('');
 	let dbText = $state('');
-	if (props.attr === 'dBA Level')
+	if (props.attr === 'Mean dBA level')
 		if (props.val < 60) {
 			dbClass = 'text-quiet-green';
 			dbText = ' dBA (Quiet)';
