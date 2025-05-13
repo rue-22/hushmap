@@ -14,10 +14,10 @@
 	import { is3d } from '$lib/state.svelte';
 	// import maplibregl from 'maplibre-gl';
 	import Property from '$lib/components/Property.svelte';
-	import sampleData from '$lib/sample_data.json';
+	// import sampleData from '$lib/sample_data.json';
 
 	// for server load
-	// const { data } = $props();
+	const { data } = $props();
 
 	const OFFSET = 23;
 	const popupOffset = {
@@ -52,10 +52,9 @@
 	<GlobeControl />
 	<ScaleControl />
 	<FullScreenControl position="top-left" />
-	<p>test</p>
 
-	<GeoJSONSource data={sampleData}>
-		{#each sampleData.features as feature (feature.id)}
+	<GeoJSONSource data={data.points}>
+		{#each data.points.features as feature (feature.id)}
 			<Marker lnglat={feature.geometry.coordinates}>
 				{#snippet content()}
 					{@const dbaRounded = Math.round(Number(feature.properties.meanNoiseLevel))}
@@ -73,7 +72,9 @@
 					<Property attr="Number of sessions" val={feature.properties.noOfSessions} />
 					<Property attr="Mean dBA level" val={feature.properties.meanNoiseLevel} />
 					<span class="italic">Graph</span>:
-					<a href="/{feature.id}" target="_blank" class="underline">Click here!</a>
+					<a href="/{feature.id}" target="_blank" class="italic underline"
+						>Click here for more info!</a
+					>
 				</Popup>
 			</Marker>
 		{/each}

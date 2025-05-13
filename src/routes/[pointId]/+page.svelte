@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { Chart, Label, Select } from 'flowbite-svelte';
-	import sampleSessions from '$lib/sample_point.json';
 
-	let selected = $state(sampleSessions.sessions[0].sessionId);
+	const { data } = $props();
+	const { sessionsInfo } = data;
+
+	let selected = $state(sessionsInfo.sessions?.[0]?.sessionNumber ?? '');
 	function listSessions() {
-		const sessionChoices = sampleSessions.sessions.map(session => ({
-			value: session.sessionId,
-			name: session.date,
+		const sessionChoices = sessionsInfo.sessions.map(session => ({
+			value: session.sessionNumber,
+			name: session.startDate,
 		}));
 
 		return sessionChoices;
@@ -31,12 +33,20 @@
 				x: {
 					show: true,
 				},
-				custom({ series, seriesIndex, dataPointIndex }) {
+				custom({
+					series,
+					seriesIndex,
+					dataPointIndex,
+				}: {
+					series: number[][] | (number | null)[][];
+					seriesIndex: number;
+					dataPointIndex: number;
+				}) {
 					const description = descriptions[dataPointIndex];
 					const time = startTimes[dataPointIndex];
-					let value = '';
-					if (series[seriesIndex][dataPointIndex] === null) value = 'No Data';
-					else value = `${series[seriesIndex][dataPointIndex]} dBA`;
+					let value = $state('');
+					if (series[seriesIndex]?.[dataPointIndex] === null) value = 'No Data';
+					else value = `${series[seriesIndex]?.[dataPointIndex]} dBA`;
 
 					return `
 						<div class="p-2 text-sm">
@@ -51,18 +61,18 @@
 				enabled: false,
 			},
 			stroke: {
-				width: 6,
+				width: 4,
 				curve: 'smooth',
 			},
 			grid: {
 				show: true,
-				strokeDashArray: 4,
+				strokeDashArray: 3,
 			},
 			series: [
 				{
 					name: 'dBA Level',
 					data: noiseLevels,
-					color: '#1A56DB',
+					color: '#202937',
 				},
 			],
 			legend: {
@@ -74,10 +84,10 @@
 					text: 'Timeframes',
 				},
 				labels: {
-					show: false,
+					show: true,
 					style: {
 						fontFamily: 'Inter, sans-serif',
-						cssClass: 'text-lg font-normal fill-gray-400 dark:fill-gray-400',
+						cssClass: 'text-xs font-normal fill-gray-400 dark:fill-gray-444400',
 					},
 				},
 				axisBorder: {
@@ -96,19 +106,35 @@
 		};
 	}
 
-	const { data } = $props();
-	const latDir = $derived(sampleSessions.lat > 0 ? 'N' : 'S');
-	const lonDir = $derived(sampleSessions.lon > 0 ? 'E' : 'W');
+	const latDir = $derived(sessionsInfo.lat > 0 ? 'N' : 'S');
+	const lonDir = $derived(sessionsInfo.lon > 0 ? 'E' : 'W');
+
+	let levelDesc = $state('');
+	let color = $state('');
+	if (sessionsInfo.meanNoiseLevel < 60) {
+		levelDesc = 'Quiet';
+		color = 'quiet-green';
+	} else if (sessionsInfo.meanNoiseLevel > 60 && sessionsInfo.meanNoiseLevel < 69) {
+		levelDesc = 'Loud';
+		color = 'loud-orange';
+	} else {
+		levelDesc = 'Very Loud';
+		color = 'very-loud-red';
+	}
 </script>
 
 <div class="bg-background-color flex min-w-full flex-col px-4 pt-2">
 	<div class="prose border-b pb-2">
 		<h2 class="text-2xl">
-			This point is in {sampleSessions.brgy}, {sampleSessions.city}.
+			This point is in <span class="italic">{sessionsInfo.brgy}, {sessionsInfo.city}</span>.
 		</h2>
-		<h3 class="text-xl">
-			Latitude and Longitude: [{sampleSessions.lat}°{latDir}, {sampleSessions.lon}°{lonDir}]
+		<h3>
+			This place is <span class="text-{color} italic">{levelDesc}</span>, with mean dBA level
+			of <span class="italic text-{color}">{sessionsInfo.meanNoiseLevel}</span>.
 		</h3>
+		<p class="">
+			Latitude and Longitude: [{sessionsInfo.lat}°{latDir}, {sessionsInfo.lon}°{lonDir}]
+		</p>
 	</div>
 
 	<Label class="text-md mt-2 w-1/4">
@@ -116,21 +142,24 @@
 		<Select
 			items={listSessions()}
 			bind:value={selected}
-			class="rounded-lg px-2 py-2 dark:bg-[#f9fafb] dark:text-black dark:outline-[0.5px]"
+			class="rounded-lg px-2 py-2 text-black dark:bg-[#f9fafb] dark:text-black dark:outline-[0.5px]"
 		/>
 	</Label>
 
 	<div class="flex flex-col items-center justify-center">
-		{#each sampleSessions.sessions as session (session.sessionId)}
-			{#if selected === session.sessionId}
+		{#each sessionsInfo.sessions as session (session.sessionNumber)}
+			{#if selected === session.sessionNumber}
 				<h4 class="mb-2 text-xl font-semibold">
-					Session {session.sessionId} - {session.date}
+					{#if session.startDate === session.endDate}
+						Session {session.sessionNumber}: {session.startDate}
+					{:else}
+						Session {session.sessionNumber}: {session.startDate} - {session.endDate}
+					{/if}
 				</h4>
 				<Chart
-					class="w-full rounded-xl border-1"
+					class="w-full rounded-xl border-1 px-4"
 					options={buildOptions(session.data, session.startTimes, session.descriptions)}
 				/>
-				<p class="border text-center">Test</p>
 			{/if}
 		{/each}
 	</div>
