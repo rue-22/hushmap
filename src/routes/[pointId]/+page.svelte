@@ -113,10 +113,10 @@
 
 	let levelDesc = $state('');
 	let color = $state('');
-	if (sessionsInfo.meanNoiseLevel < 60) {
+	if (sessionsInfo.meanNoise < 60) {
 		levelDesc = 'Quiet';
 		color = 'quiet-green';
-	} else if (sessionsInfo.meanNoiseLevel > 60 && sessionsInfo.meanNoiseLevel < 69) {
+	} else if (sessionsInfo.meanNoise > 60 && sessionsInfo.meanNoise < 69) {
 		levelDesc = 'Loud';
 		color = 'loud-orange';
 	} else {
@@ -132,7 +132,7 @@
 		</h2>
 		<h3>
 			This place is <span class="text-{color} italic">{levelDesc}</span>, with mean dBA level
-			of <span class="italic text-{color}">{sessionsInfo.meanNoiseLevel}</span>.
+			of <span class="italic text-{color}">{sessionsInfo.meanNoise}</span>.
 		</h3>
 		<p class="">
 			Latitude and Longitude: [{sessionsInfo.lat}°{latDir}, {sessionsInfo.lon}°{lonDir}]
