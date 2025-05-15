@@ -61,7 +61,7 @@
 				enabled: false,
 			},
 			stroke: {
-				width: 4,
+				width: 2.5,
 				curve: 'smooth',
 			},
 			grid: {
@@ -85,6 +85,8 @@
 				},
 				labels: {
 					show: true,
+					hideOverlappingLabels: true,
+					rotate: -10,
 					style: {
 						fontFamily: 'Inter, sans-serif',
 						cssClass: 'text-xs font-normal fill-gray-400 dark:fill-gray-444400',
@@ -94,7 +96,7 @@
 					show: true,
 				},
 				axisTicks: {
-					show: true,
+					show: false,
 				},
 			},
 			yaxis: {
