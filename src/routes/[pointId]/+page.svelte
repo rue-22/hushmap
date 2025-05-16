@@ -8,7 +8,7 @@
 	function listSessions() {
 		const sessionChoices = sessionsInfo.sessions.map(session => ({
 			value: session.sessionNumber,
-			name: session.startDate,
+			name: `${session.sessionNumber}: ${session.startDate} - ${session.endDate}`,
 		}));
 
 		return sessionChoices;
@@ -135,11 +135,13 @@
 			of <span class="italic text-{color}">{sessionsInfo.meanNoise}</span>.
 		</h3>
 		<p class="">
-			Latitude and Longitude: [{sessionsInfo.lat}°{latDir}, {sessionsInfo.lon}°{lonDir}]
+			Latitude and Longitude: [{sessionsInfo.lat.toFixed(2)}°{latDir}, {sessionsInfo.lon.toFixed(
+				2,
+			)}°{lonDir}]
 		</p>
 	</div>
 
-	<Label class="text-md mt-2 w-1/4">
+	<Label class="text-md mt-2 w-full md:w-1/4">
 		<p>Select date (session)</p>
 		<Select
 			items={listSessions()}
