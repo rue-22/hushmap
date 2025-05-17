@@ -33,12 +33,6 @@
 	};
 </script>
 
-<!-- <ul>
-	{#each data.instruments as instrument}
-		<li>{instrument.name}</li>
-	{/each}
-</ul> -->
-
 <!-- darkMap: style="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json" -->
 <!-- openStreetMap: style="https://roblabs.com/xyz-raster-sources/styles/openstreetmap.json" -->
 
@@ -58,7 +52,7 @@
 			<Marker lnglat={feature.geometry.coordinates}>
 				{#snippet content()}
 					{@const dbaRounded = Math.round(Number(feature.properties.meanNoiseLevel))}
-					{#if Number(feature.properties.meanNoiseLevel) < 60}
+					{#if Number(feature.properties.meanNoiseLevel) <= 60}
 						<Circle color="quiet-green" dbaLevel={dbaRounded} />
 					{:else if Number(feature.properties.meanNoiseLevel) > 60 && Number(feature.properties.meanNoiseLevel) < 69}
 						<Circle color="loud-orange" dbaLevel={dbaRounded} />
