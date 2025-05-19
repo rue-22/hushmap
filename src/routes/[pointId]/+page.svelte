@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Chart, Label, Select } from 'flowbite-svelte';
+	import Progressbar from '$lib/components/Progressbar.svelte';
 
 	const { data } = $props();
 	const { sessionsInfo } = data;
@@ -72,7 +73,7 @@
 				{
 					name: 'dBA Level',
 					data: noiseLevels,
-					color: '#202937',
+					color: '#ffffff',
 				},
 			],
 			legend: {
@@ -82,6 +83,9 @@
 				categories: startTimes,
 				title: {
 					text: 'Timeframes',
+					style: {
+						color: 'white',
+					}
 				},
 				labels: {
 					show: true,
@@ -89,7 +93,7 @@
 					rotate: -10,
 					style: {
 						fontFamily: 'Inter, sans-serif',
-						cssClass: 'text-xs font-normal fill-gray-400 dark:fill-gray-444400',
+						cssClass: 'text-xs font-light fill-white dark:fill-white',
 					},
 				},
 				axisBorder: {
@@ -103,6 +107,18 @@
 				show: true,
 				title: {
 					text: 'dBA Level',
+					style: {
+						color: 'white',
+					}
+				},
+				labels: {
+					style: {
+						fontFamily: 'Inter, sans-serif',
+						cssClass: 'text-xs font-light fill-white dark:fill-white',
+					},
+				},
+				axisBorder: {
+					show: true,
 				},
 			},
 		};
@@ -125,15 +141,14 @@
 	}
 </script>
 
-<div class="bg-background-color flex min-w-full flex-col px-4 pt-2">
-	<div class="prose border-b pb-2">
+<div class="bg-background-color flex min-w-full flex-col px-4 pt-2 text-white">
+	<div class="prose dark:prose-invert border-b pb-2">
 		<h2 class="text-2xl">
 			This point is in <span class="italic">{sessionsInfo.brgy}, {sessionsInfo.city}</span>.
 		</h2>
-		<h3>
-			This place is <span class="text-{color} italic">{levelDesc}</span>, with mean dBA level
-			of <span class="italic text-{color}">{sessionsInfo.meanNoise}</span>.
-		</h3>
+		<div>
+			<Progressbar {color} level={String((sessionsInfo.meanNoise / 1.40).toFixed(2))} noise={sessionsInfo.meanNoise} desc={levelDesc} />
+		</div>
 		<p class="">
 			Latitude and Longitude: [{sessionsInfo.lat.toFixed(2)}°{latDir}, {sessionsInfo.lon.toFixed(
 				2,
@@ -142,18 +157,18 @@
 	</div>
 
 	<Label class="text-md mt-2 w-full md:w-1/4">
-		<p>Select date (session)</p>
+		<p class="mb-2">Select date (session)</p>
 		<Select
 			items={listSessions()}
 			bind:value={selected}
-			class="rounded-lg px-2 py-2 text-black dark:bg-[#f9fafb] dark:text-black dark:outline-[0.5px]"
+			class="rounded-lg px-2 py-2 text-black dark:bg-header-color dark:text-white dark:outline-[0.5px]"
 		/>
 	</Label>
 
-	<div class="flex flex-col items-center justify-center">
+	<div class="flex flex-col items-center justify-center text-white">
 		{#each sessionsInfo.sessions as session (session.sessionNumber)}
 			{#if selected === session.sessionNumber}
-				<h4 class="mb-2 text-xl font-semibold">
+				<h4 class="mb-2 md:mb-4 text-xl font-semibold">
 					{#if session.startDate === session.endDate}
 						Session {session.sessionNumber}: {session.startDate}
 					{:else}
@@ -161,7 +176,7 @@
 					{/if}
 				</h4>
 				<Chart
-					class="w-full rounded-xl border-1 px-4"
+					class="w-full rounded-xl border-[0.5px] px-4"
 					options={buildOptions(session.data, session.startTimes, session.descriptions)}
 				/>
 			{/if}

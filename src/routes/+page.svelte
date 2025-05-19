@@ -33,12 +33,13 @@
 	};
 </script>
 
+<!-- lightMap: style="https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json" -->
 <!-- darkMap: style="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json" -->
 <!-- openStreetMap: style="https://roblabs.com/xyz-raster-sources/styles/openstreetmap.json" -->
 
 <MapLibre
 	class="h-full"
-	style="https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json"
+	style="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
 	zoom={15.3}
 	center={{ lng: 121.068, lat: 14.6539 }}
 >
@@ -49,7 +50,7 @@
 
 	<GeoJSONSource data={data.points}>
 		{#each data.points.features as feature (feature.id)}
-			<Marker lnglat={feature.geometry.coordinates}>
+			<Marker lnglat={feature.geometry.coordinates} >
 				{#snippet content()}
 					{@const dbaRounded = Math.round(Number(feature.properties.meanNoiseLevel))}
 					{#if Number(feature.properties.meanNoiseLevel) <= 60}
@@ -60,7 +61,7 @@
 						<Circle color="very-loud-red" dbaLevel={dbaRounded} />
 					{/if}
 				{/snippet}
-				<Popup offset={popupOffset}>
+				<Popup class="maplibre-popup-content" offset={popupOffset}>
 					<Property attr="Barangay" val={feature.properties.brgy} />
 					<Property attr="City" val={feature.properties.city} />
 					<Property attr="Number of sessions" val={feature.properties.noOfSessions} />
@@ -111,3 +112,11 @@
 		/>
 	{/if}
 </MapLibre>
+
+<style>
+.maplibregl-popup-content {
+  background: #18181b !important; /* Tailwind's bg-zinc-900 */
+  color: #fff !important;
+  border-radius: 0.5rem;
+}
+</style>

@@ -3,7 +3,7 @@
 </script>
 
 <div
-	class="text-{color} border-{color} center flex size-10 cursor-pointer flex-col items-center justify-center gap-0 rounded-full border-3 bg-white"
+	class="text-{color} border-{color} center flex size-10 cursor-pointer flex-col items-center justify-center gap-0 rounded-full border-2 bg-header-color"
 >
 	{#if color === 'quiet-green'}
 		<span class="icon-[solar--volume-small-linear] size-xl"></span>
