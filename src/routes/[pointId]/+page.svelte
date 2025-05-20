@@ -93,7 +93,7 @@
 					rotate: -10,
 					style: {
 						fontFamily: 'Inter, sans-serif',
-						cssClass: 'text-xs font-light fill-white dark:fill-white',
+						cssClass: 'text-xs font-light fill-white',
 					},
 				},
 				axisBorder: {
@@ -114,7 +114,7 @@
 				labels: {
 					style: {
 						fontFamily: 'Inter, sans-serif',
-						cssClass: 'text-xs font-light fill-white dark:fill-white',
+						cssClass: 'text-xs font-light fill-white',
 					},
 				},
 				axisBorder: {
@@ -161,7 +161,7 @@
 		<Select
 			items={listSessions()}
 			bind:value={selected}
-			class="rounded-lg px-2 py-2 text-black dark:bg-header-color dark:text-white dark:outline-[0.5px]"
+			class="rounded-lg px-2 py-2 bg-header-color text-white outline-[0.5px]"
 		/>
 	</Label>
 

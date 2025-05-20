@@ -40,7 +40,7 @@
 </script>
 
 <div class="flex justify-between mb-1">
-  <span class="text-lg font-medium text-blue-700 dark:text-white">Point is <span class="italic {textColor}">{desc}</span> like
+  <span class="text-lg font-medium text-white">Point is <span class="italic {textColor}">{desc}</span> like
     {#if 'aeiouAEIOU'.includes((comparison ?? '')[0] || '')}
         an
     {:else}
@@ -48,8 +48,8 @@
     {/if}
      <span class="italic {textColor}">{comparison}</span>
   </span>
-  <span class="text-lg font-medium text-blue-700 dark:text-white">Mean dBA level: <span class="italic {textColor}">{noise}</span> dBA</span>
+  <span class="text-lg font-medium text-white">Mean dBA level: <span class="italic {textColor}">{noise}</span> dBA</span>
 </div>
-<div class="w-full bg-gray-200 rounded-full h-2.5 md:h-3.5 dark:bg-gray-700">
-  <div class="{bgColor} h-2.5 md:h-3.5 rounded-full transition-all duration-700" style="width: {level}%"></div>
+<div class="w-full rounded-full h-2.5 md:h-3.5 bg-gray-700">
+  <div class="{bgColor} h-2.5 md:h-3.5 rounded-full" style="width: {level}%"></div>
 </div>
