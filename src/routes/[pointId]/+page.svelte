@@ -258,8 +258,10 @@
 					<Card title={"Timeframe"} value={`${session.startTimes[0]} - ${session.startTimes[session.startTimes.length - 1]}`} icon="time" />
 					<Card title={"Quietest Time"} value={getTimeAndLevel("min", session.data, session.startTimes)[0]} adtl={String(getTimeAndLevel("min", session.data, session.startTimes)[1]) + ' dBA'} icon="quiet" />
 					<Card title={"Loudest Time"} value={getTimeAndLevel("max", session.data, session.startTimes)[0]} adtl={String(getTimeAndLevel("max", session.data, session.startTimes)[1]) + ' dBA'} icon="loud" />
+				</div>
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-2 justify-center">
 					{#if sessionsWithinAnHour[session.sessionNumber - 1]?.isWithinAnHour}
-						<Card title="Time (Most Recent)" value={`${session.startTimes[session.startTimes.length - 1]}`} adtl={sessionsWithinAnHour[session.sessionNumber - 1]?.diff + ' minutes ago'} icon="time" />
+						<Card title="Time (Most Recent)" value={`${session.startTimes[session.startTimes.length - 1]}`} adtl={Math.round(sessionsWithinAnHour[session.sessionNumber - 1]?.diff) + ' minutes ago'} icon="time" />
 						<Card title="dBA Level (Most Recent)" value={`${session.data[session.data.length - 1]} dBA`} icon="dba" />
 						<Card title="Description (Most Recent)" value={session.descriptions[session.descriptions.length - 1]} icon="desc" />
 					<!-- {:else}
