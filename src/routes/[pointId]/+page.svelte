@@ -249,7 +249,7 @@
 							<Spinner />
 							<p class="mt-2">Summarizing insights...</p>
 						{:else}
-							<button type="button" class="animate-bounce border-2 rounded-full border-header-color py-3 px-8 cursor-pointer hover:bg-gray-700" onclick={() => handleClick(session.session_id)}>Summarize insights with <span class="italic text-lg">✨AI✨</span>?</button>
+							<button type="button" class="mt-2 md:mt-0 animate-bounce border-2 rounded-full border-header-color py-3 px-8 cursor-pointer hover:bg-gray-700" onclick={() => handleClick(session.session_id)}>Summarize insights with <span class="italic text-lg">✨AI✨</span>?</button>
 						{/if}
 					{/if}
 				</div>

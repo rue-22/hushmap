@@ -44,7 +44,7 @@
 </script>
 
 <div class="flex justify-between mb-1 ">
-  <span class="font-medium text-white text-md md:text-lg">Point is <span class="italic {textColor} text-md:font-semibold">{desc}</span> (similar to the noise of
+  <span class="font-medium text-white text-md md:text-lg w-1/2 md:w-auto">Point is <span class="italic {textColor} text-md:font-semibold">{desc}</span> (similar to the noise of
     {#if 'aeiouAEIOU'.includes((comparison ?? '')[0] || '')}
         an
     {:else}
