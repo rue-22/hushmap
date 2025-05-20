@@ -142,7 +142,7 @@
 </script>
 
 <div class="bg-background-color flex min-w-full flex-col px-4 pt-2 text-white">
-	<div class="prose dark:prose-invert border-b pb-2">
+	<div class="prose-invert border-b pb-2">
 		<h2 class="text-2xl">
 			This point is in <span class="italic">{sessionsInfo.brgy}, {sessionsInfo.city}</span>.
 		</h2>
