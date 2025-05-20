@@ -40,16 +40,16 @@
 </script>
 
 <div class="flex justify-between mb-1">
-  <span class="text-lg font-medium text-white">Point is <span class="italic {textColor}">{desc}</span> (similar to the noise of
+  <span class="text-lg font-medium text-white">Point is <span class="italic {textColor} font-semibold">{desc}</span> (similar to the noise of
     {#if 'aeiouAEIOU'.includes((comparison ?? '')[0] || '')}
         an
     {:else}
         a
     {/if}
-     <span class="italic {textColor}">{comparison}</span>)
+     <span class="italic {textColor} font-semibold">{comparison}</span>)
   </span>
-  <span class="text-lg font-medium text-white">Mean dBA level: <span class="italic {textColor}">{noise}</span> dBA</span>
+  <span class="text-lg font-medium text-white">Mean dBA level: <span class="italic {textColor} font-semibold">{noise}</span></span>
 </div>
-<div class="w-full rounded-full h-2.5 md:h-3.5 bg-gray-700">
-  <div class="{bgColor} h-2.5 md:h-3.5 rounded-full" style="width: {level}%"></div>
+<div class="w-full rounded-full h-4 md:h-5 bg-gray-700">
+  <div class="{bgColor} h-4 md:h-5 rounded-full text-sm font-medium text-white flex items-center justify-center leading-none" style="width: {level}%">{noise} dBA</div>
 </div>
