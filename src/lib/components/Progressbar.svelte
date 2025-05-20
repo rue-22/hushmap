@@ -21,14 +21,14 @@
         { min: 40, max: 60, desc: "Soft Whisper" },
         { min: 60, max: 70, desc: "Urban Residence" },
         { min: 70, max: 80, desc: "Normal Conversation" },
-        { min: 80, max: 90, desc: "Classroom Noise" },
+        { min: 80, max: 90, desc: "Classroom" },
         { min: 90, max: 100, desc: "Train" },
         { min: 100, max: 110, desc: "Boiler Room" },
         { min: 110, max: 120, desc: "Construction Site" },
         { min: 120, max: 130, desc: "Night Club" },
         { min: 130, max: 140, desc: "Operating Heavy Equipment" },
         { min: 140, max: 150, desc: "Jet Taking Off" },
-        { min: 150, max: Infinity, desc: "Treshold of Pain" }
+        { min: 150, max: Infinity, desc: "Threshold of Pain" }
     ];
 
     function getNoiseComparison(noise: number) {
@@ -40,13 +40,13 @@
 </script>
 
 <div class="flex justify-between mb-1">
-  <span class="text-lg font-medium text-white">Point is <span class="italic {textColor}">{desc}</span> like
+  <span class="text-lg font-medium text-white">Point is <span class="italic {textColor}">{desc}</span> (similar to the noise of
     {#if 'aeiouAEIOU'.includes((comparison ?? '')[0] || '')}
         an
     {:else}
         a
     {/if}
-     <span class="italic {textColor}">{comparison}</span>
+     <span class="italic {textColor}">{comparison}</span>)
   </span>
   <span class="text-lg font-medium text-white">Mean dBA level: <span class="italic {textColor}">{noise}</span> dBA</span>
 </div>

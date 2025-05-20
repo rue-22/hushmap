@@ -142,11 +142,11 @@
 </script>
 
 <div class="bg-background-color flex min-w-full flex-col px-4 pt-2 text-white">
-	<div class="prose-invert border-b pb-2">
-		<h2 class="text-2xl">
+	<div class="border-b pb-2">
+		<h2 class="text-2xl md:text-3xl font-bold mb-2">
 			This point is in <span class="italic">{sessionsInfo.brgy}, {sessionsInfo.city}</span>.
 		</h2>
-		<div>
+		<div class="mb-2">
 			<Progressbar {color} level={String((sessionsInfo.meanNoise / 1.40).toFixed(2))} noise={sessionsInfo.meanNoise} desc={levelDesc} />
 		</div>
 		<p class="">
@@ -156,8 +156,8 @@
 		</p>
 	</div>
 
-	<Label class="text-md mt-2 w-full md:w-1/4">
-		<p class="mb-2">Select date (session)</p>
+	<Label class="text-md mt-2 w-full md:w-1/4 mb-4">
+		<p class="mb-1">Select date (session)</p>
 		<Select
 			items={listSessions()}
 			bind:value={selected}
