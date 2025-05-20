@@ -7,6 +7,31 @@
 	const { data } = $props();
 	const { sessionsInfo } = data;
 
+	// get date
+	const permissibleHours = 1;
+	const now: Date = new Date()
+	const sessionsWithinAnHour: boolean[] =  createTruthTable(sessionsInfo.sessions)
+
+	function createTruthTable(sessions: object[]) {
+		let recentTable = []
+
+		sessions.forEach((session) => {
+			const sessionLastDate = session.endDate;
+			const sessionLastTime = session.startTimes[session.startTimes.length - 1];
+
+			const sessionDate = new Date(`${sessionLastDate} ${sessionLastTime}`);
+			const diff = (Math.abs(now.getTime() - sessionDate.getTime()) / (60 * 60 * 1000)).toFixed(2)
+			const isWithinAnHour = diff <= permissibleHours 
+			recentTable.push({
+				diff: diff * 60,
+				isWithinAnHour: isWithinAnHour,
+			});
+		}
+		)
+
+		return recentTable
+	}
+
 	let selected = $state(sessionsInfo.sessions?.[0]?.sessionNumber ?? '');
 	function listSessions() {
 		const sessionChoices = sessionsInfo.sessions.map(session => ({
@@ -202,7 +227,7 @@
 		/>
 	</Label>
 
-	<div class="flex flex-col justify-center text-white gap-2 md:gap-4">
+	<div class="flex flex-col justify-center text-white gap-2 md:gap-4 pb-6">
 		{#each sessionsInfo.sessions as session (session.sessionNumber)}
 			{#if selected === session.sessionNumber}
 				<h4 class="text-xl font-semibold text-center">
@@ -216,12 +241,6 @@
 					class="w-full border-2 px-4 border-gray-700"
 					options={buildOptions(session.data, fillMeanData(session.meanNoiseSession, session.data.length), colorHex, session.startTimes, session.descriptions)}
 				/>
-				<div class="grid grid-cols-1 md:grid-cols-4 gap-2">
-					<Card title={"Mean dBA level"} value={`${session.meanNoiseSession} dBA`} icon="dba" />
-					<Card title={"Time"} value={`${session.startTimes[0]} - ${session.startTimes[session.startTimes.length - 1]}`} icon="time" />
-					<Card title={"Quietest Time"} value={getTimeAndLevel("min", session.data, session.startTimes)[0]} adtl={String(getTimeAndLevel("min", session.data, session.startTimes)[1])} icon="quiet" />
-					<Card title={"Loudest Time"} value={getTimeAndLevel("max", session.data, session.startTimes)[0]} adtl={String(getTimeAndLevel("max", session.data, session.startTimes)[1])} icon="loud" />
-				</div>
 				<div class="flex items-center justify-center flex-col">
 					{#if result}
 						<p class="border-3 px-2 border-gray-700 py-2">{result}</p>
@@ -230,8 +249,21 @@
 							<Spinner />
 							<p class="mt-2">Summarizing insights...</p>
 						{:else}
-							<button type="button" class="border-2 rounded-full border-header-color py-3 px-8 cursor-pointer hover:bg-gray-700" onclick={() => handleClick(session.session_id)}>Summarize insights with AI</button>
+							<button type="button" class="animate-bounce border-2 rounded-full border-header-color py-3 px-8 cursor-pointer hover:bg-gray-700" onclick={() => handleClick(session.session_id)}>Summarize insights with <span class="italic text-lg">✨AI✨</span>?</button>
 						{/if}
+					{/if}
+				</div>
+				<div class="grid grid-cols-1 md:grid-cols-4 gap-2 justify-center">
+					<Card title={"Mean dBA Level"} value={`${session.meanNoiseSession} dBA`} icon="dba" />
+					<Card title={"Timeframe"} value={`${session.startTimes[0]} - ${session.startTimes[session.startTimes.length - 1]}`} icon="time" />
+					<Card title={"Quietest Time"} value={getTimeAndLevel("min", session.data, session.startTimes)[0]} adtl={String(getTimeAndLevel("min", session.data, session.startTimes)[1]) + ' dBA'} icon="quiet" />
+					<Card title={"Loudest Time"} value={getTimeAndLevel("max", session.data, session.startTimes)[0]} adtl={String(getTimeAndLevel("max", session.data, session.startTimes)[1]) + ' dBA'} icon="loud" />
+					{#if sessionsWithinAnHour[session.sessionNumber - 1]?.isWithinAnHour}
+						<Card title="Time (Most Recent)" value={`${session.startTimes[session.startTimes.length - 1]}`} adtl={sessionsWithinAnHour[session.sessionNumber - 1]?.diff + ' minutes ago'} icon="time" />
+						<Card title="dBA Level (Most Recent)" value={`${session.data[session.data.length - 1]} dBA`} icon="dba" />
+						<Card title="Description (Most Recent)" value={session.descriptions[session.descriptions.length - 1]} icon="desc" />
+					<!-- {:else}
+						<p>Not within an hour!</p> -->
 					{/if}
 				</div>
 			{/if}
