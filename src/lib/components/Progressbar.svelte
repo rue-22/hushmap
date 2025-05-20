@@ -15,20 +15,24 @@
     }
 
     const noiseRanges = [
-        { min: 0, max: 20, desc: "Threshold of Hearing" },
-        { min: 20, max: 30, desc: "Silent Study Room" },
-        { min: 30, max: 40, desc: "North Rim of Grand Canyon" },
-        { min: 40, max: 60, desc: "Soft Whisper" },
-        { min: 60, max: 70, desc: "Urban Residence" },
-        { min: 70, max: 80, desc: "Normal Conversation" },
-        { min: 80, max: 90, desc: "Classroom" },
-        { min: 90, max: 100, desc: "Train" },
-        { min: 100, max: 110, desc: "Boiler Room" },
-        { min: 110, max: 120, desc: "Construction Site" },
-        { min: 120, max: 130, desc: "Night Club" },
-        { min: 130, max: 140, desc: "Operating Heavy Equipment" },
-        { min: 140, max: 150, desc: "Jet Taking Off" },
-        { min: 150, max: Infinity, desc: "Threshold of Pain" }
+        { min: 0, max: 39, desc: "Silent Room or Library" },
+        { min: 39, max: 49, desc: "Quiet Office or Residence" },
+        { min: 49, max: 54, desc: "Refrigerator Hum" },
+        { min: 54, max: 59, desc: "Household Appliance" },
+        { min: 59, max: 64, desc: "Normal Indoor Sound" },
+        { min: 64, max: 69, desc: "Moderate Traffic" },
+        { min: 69, max: 74, desc: "TV Audio" },
+        { min: 74, max: 79, desc: "Loud Indoor Sound" },
+        { min: 79, max: 84, desc: "Busy Urban Noise" },
+        { min: 84, max: 89, desc: "Truck" },
+        { min: 89, max: 94, desc: "Outdoor Machinery" },
+        { min: 94, max: 99, desc: "Motorcycle" },
+        { min: 99, max: 104, desc: "Loud Vehicle" },
+        { min: 104, max: 109, desc: "Concert" },
+        { min: 109, max: 114, desc: "Night Club" },
+        { min: 114, max: 124, desc: "Jet Engine" },
+        { min: 124, max: 140, desc: "Jackhammer" },
+        { min: 140, max: Infinity, desc: "Pain Threshold" }
     ];
 
     function getNoiseComparison(noise: number) {
@@ -39,8 +43,8 @@
     let comparison = $derived(getNoiseComparison(noise))
 </script>
 
-<div class="flex justify-between mb-1">
-  <span class="text-lg font-medium text-white">Point is <span class="italic {textColor} font-semibold">{desc}</span> (similar to the noise of
+<div class="flex justify-between mb-1 ">
+  <span class="font-medium text-white text-md md:text-lg">Point is <span class="italic {textColor} text-md:font-semibold">{desc}</span> (similar to the noise of
     {#if 'aeiouAEIOU'.includes((comparison ?? '')[0] || '')}
         an
     {:else}
@@ -48,7 +52,7 @@
     {/if}
      <span class="italic {textColor} font-semibold">{comparison}</span>)
   </span>
-  <span class="text-lg font-medium text-white">Mean dBA level: <span class="italic {textColor} font-semibold">{noise}</span></span>
+  <span class="font-medium text-white text-md md:text-lg">Mean dBA level: <span class="italic {textColor} font-semibold">{noise}</span></span>
 </div>
 <div class="w-full rounded-full h-4 md:h-5 bg-gray-700">
   <div class="{bgColor} h-4 md:h-5 rounded-full text-sm font-medium text-white flex items-center justify-center leading-none" style="width: {level}%">{noise} dBA</div>

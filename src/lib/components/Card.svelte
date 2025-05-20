@@ -10,6 +10,8 @@
         svg = "icon-[solar--volume-small-bold-duotone]"
     } else if (icon == "loud") {
         svg = "icon-[solar--volume-loud-bold]"
+    } else if (icon == "desc") {
+        svg = "icon-[solar--notes-bold]"
     }
 </script>
 
@@ -19,7 +21,7 @@
         <h5 class="text-sm tracking-tight text-gray-400">{title}</h5>
     </div>
         {#if adtl}
-            <p class="text-2xl md:text-3xl font-bold text-white">{value} <span class="text-lg md:text-xl">({adtl} dBA)</span></p>
+            <p class="text-2xl md:text-3xl font-bold text-white">{value} <span class="text-lg md:text-xl">({adtl})</span></p>
         {:else}
             <p class="text-2xl md:text-3xl font-bold text-white">{value}</p>
         {/if}
