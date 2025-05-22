@@ -10,7 +10,7 @@
 	// get date
 	const permissibleHours = 1;
 	const now: Date = new Date()
-	const sessionsWithinAnHour: boolean[] =  createTruthTable(sessionsInfo.sessions)
+	const sessionsWithinAnHour =  createTruthTable(sessionsInfo.sessions)
 
 	function createTruthTable(sessions: object[]) {
 		let recentTable = []
@@ -21,9 +21,9 @@
 
 			const sessionDate = new Date(`${sessionLastDate} ${sessionLastTime}`);
 			const diff = (Math.abs(now.getTime() - sessionDate.getTime()) / (60 * 60 * 1000)).toFixed(2)
-			const isWithinAnHour = diff <= permissibleHours 
+			const isWithinAnHour = parseInt(diff) <= permissibleHours 
 			recentTable.push({
-				diff: diff * 60,
+				diff: parseInt(diff) * 60,
 				isWithinAnHour: isWithinAnHour,
 			});
 		}
@@ -32,7 +32,8 @@
 		return recentTable
 	}
 
-	let selected = $state(sessionsInfo.sessions?.[0]?.sessionNumber ?? '');
+	// select latest date as default one
+	let selected = $state(sessionsInfo.sessions?.[sessionsInfo.sessions.length - 1]?.sessionNumber ?? '');
 	function listSessions() {
 		const sessionChoices = sessionsInfo.sessions.map(session => ({
 			value: session.sessionNumber,
@@ -261,11 +262,9 @@
 				</div>
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-2 justify-center">
 					{#if sessionsWithinAnHour[session.sessionNumber - 1]?.isWithinAnHour}
-						<Card title="Time (Most Recent)" value={`${session.startTimes[session.startTimes.length - 1]}`} adtl={Math.round(sessionsWithinAnHour[session.sessionNumber - 1]?.diff) + ' minutes ago'} icon="time" />
+						<Card title="Time (Most Recent)" value={`${session.startTimes[session.startTimes.length - 1]}`} adtl={Math.round(sessionsWithinAnHour[session.sessionNumber - 1]?.diff) + ' minute/s ago'} icon="time" />
 						<Card title="dBA Level (Most Recent)" value={`${session.data[session.data.length - 1]} dBA`} icon="dba" />
 						<Card title="Description (Most Recent)" value={session.descriptions[session.descriptions.length - 1]} icon="desc" />
-					<!-- {:else}
-						<p>Not within an hour!</p> -->
 					{/if}
 				</div>
 			{/if}
