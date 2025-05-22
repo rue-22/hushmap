@@ -11,6 +11,7 @@
 	const permissibleHours = 1;
 	const now: Date = new Date()
 	const sessionsWithinAnHour =  createTruthTable(sessionsInfo.sessions)
+	console.log(sessionsWithinAnHour)
 
 	function createTruthTable(sessions: object[]) {
 		let recentTable = []
@@ -20,10 +21,10 @@
 			const sessionLastTime = session.startTimes[session.startTimes.length - 1];
 
 			const sessionDate = new Date(`${sessionLastDate} ${sessionLastTime}`);
-			const diff = (Math.abs(now.getTime() - sessionDate.getTime()) / (60 * 60 * 1000)).toFixed(2)
-			const isWithinAnHour = parseInt(diff) <= permissibleHours 
+			const diff = (Math.abs(now.getTime() - sessionDate.getTime()) / (60 * 60 * 1000))
+			const isWithinAnHour = Math.round(diff) <= permissibleHours 
 			recentTable.push({
-				diff: parseInt(diff) * 60,
+				diff: diff * 60,
 				isWithinAnHour: isWithinAnHour,
 			});
 		}

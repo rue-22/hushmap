@@ -57,15 +57,17 @@
 				<Marker lnglat={feature.geometry.coordinates} >
 					{#snippet content()}
 						{@const dbaRounded = Math.round(Number(feature.properties.meanNoiseLevel))}
-						<!-- <div class="breathe"> -->
-							{#if Number(feature.properties.meanNoiseLevel) <= 60}
-								<Circle color="quiet-green" dbaLevel={dbaRounded} />
-							{:else if Number(feature.properties.meanNoiseLevel) > 60 && Number(feature.properties.meanNoiseLevel) < 69}
-								<Circle color="loud-orange" dbaLevel={dbaRounded} />
-							{:else}
-								<Circle color="very-loud-red" dbaLevel={dbaRounded} />
-							{/if}
-						<!-- </div> -->
+							<div class={feature.properties.isActive ? "breathe" : ""}>
+								{#if feature.properties.noOfSessions === 0}
+									<Circle color="red-900" dbaLevel={0} />
+								{:else if Number(feature.properties.meanNoiseLevel) <= 60}
+									<Circle color="quiet-green" dbaLevel={dbaRounded} />
+								{:else if Number(feature.properties.meanNoiseLevel) > 60 && Number(feature.properties.meanNoiseLevel) < 69}
+									<Circle color="loud-orange" dbaLevel={dbaRounded} />
+								{:else}
+									<Circle color="very-loud-red" dbaLevel={dbaRounded} />
+								{/if}
+							</div>
 					{/snippet}
 					<Popup class="maplibre-popup-content" offset={popupOffset}>
 						<Property attr="Barangay" val={feature.properties.brgy} />
