@@ -12,7 +12,7 @@
 	} from 'svelte-maplibre-gl';
 	import Circle from '$lib/components/Circle.svelte';
 	import { is3d } from '$lib/state.svelte';
-	// import maplibregl from 'maplibre-gl';
+	import Legend from '$lib/components/Legend.svelte';
 	import Property from '$lib/components/Property.svelte';
 	// import sampleData from '$lib/sample_data.json';
 
@@ -37,86 +37,102 @@
 <!-- darkMap: style="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json" -->
 <!-- openStreetMap: style="https://roblabs.com/xyz-raster-sources/styles/openstreetmap.json" -->
 
-<MapLibre
-	class="h-full"
-	style="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
-	zoom={15.3}
-	center={{ lng: 121.068, lat: 14.6539 }}
->
-	<NavigationControl />
-	<GlobeControl />
-	<ScaleControl />
-	<FullScreenControl position="top-left" />
+<div class="relative w-full h-full">
+	<MapLibre
+		class="h-full"
+		style="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
+		zoom={15.3}
+		center={{ lng: 121.068, lat: 14.6539 }}
+	>
+		<NavigationControl />
+		<GlobeControl />
+		<ScaleControl />
+		<FullScreenControl position="top-left" />
+		<div class="absolute z-10 left-3 bottom-10">
+			<Legend />
+		</div>
 
-	<GeoJSONSource data={data.points}>
-		{#each data.points.features as feature (feature.id)}
-			<Marker lnglat={feature.geometry.coordinates} >
-				{#snippet content()}
-					{@const dbaRounded = Math.round(Number(feature.properties.meanNoiseLevel))}
-					{#if Number(feature.properties.meanNoiseLevel) <= 60}
-						<Circle color="quiet-green" dbaLevel={dbaRounded} />
-					{:else if Number(feature.properties.meanNoiseLevel) > 60 && Number(feature.properties.meanNoiseLevel) < 69}
-						<Circle color="loud-orange" dbaLevel={dbaRounded} />
-					{:else}
-						<Circle color="very-loud-red" dbaLevel={dbaRounded} />
-					{/if}
-				{/snippet}
-				<Popup class="maplibre-popup-content" offset={popupOffset}>
-					<Property attr="Barangay" val={feature.properties.brgy} />
-					<Property attr="City" val={feature.properties.city} />
-					<Property attr="Number of sessions" val={feature.properties.noOfSessions} />
-					<Property attr="Mean dBA level" val={feature.properties.meanNoiseLevel} />
-					<span class="italic">Graph</span>:
-					<a href="/{feature.id}" target="_blank" class="italic underline"
-						>Click here for more info!</a
-					>
-				</Popup>
-			</Marker>
-		{/each}
-	</GeoJSONSource>
+		<GeoJSONSource data={data.points}>
+			{#each data.points.features as feature (feature.id)}
+				<Marker lnglat={feature.geometry.coordinates} >
+					{#snippet content()}
+						{@const dbaRounded = Math.round(Number(feature.properties.meanNoiseLevel))}
+						<!-- <div class="breathe"> -->
+							{#if Number(feature.properties.meanNoiseLevel) <= 60}
+								<Circle color="quiet-green" dbaLevel={dbaRounded} />
+							{:else if Number(feature.properties.meanNoiseLevel) > 60 && Number(feature.properties.meanNoiseLevel) < 69}
+								<Circle color="loud-orange" dbaLevel={dbaRounded} />
+							{:else}
+								<Circle color="very-loud-red" dbaLevel={dbaRounded} />
+							{/if}
+						<!-- </div> -->
+					{/snippet}
+					<Popup class="maplibre-popup-content" offset={popupOffset}>
+						<Property attr="Barangay" val={feature.properties.brgy} />
+						<Property attr="City" val={feature.properties.city} />
+						<Property attr="Number of sessions" val={feature.properties.noOfSessions} />
+						<Property attr="Mean dBA level" val={feature.properties.meanNoiseLevel} />
+						<span class="italic">Graph</span>:
+						<a href="/{feature.id}" target="_blank" class="italic underline"
+							>Click here for more info!</a
+						>
+					</Popup>
+				</Marker>
+			{/each}
+		</GeoJSONSource>
 
-	{#if is3d.state}
-		<FillExtrusionLayer
-			source="carto"
-			sourceLayer="building"
-			minzoom={14}
-			filter={['!=', ['get', 'hide_3d'], true]}
-			paint={{
-				'fill-extrusion-color': [
-					'interpolate',
-					['linear'],
-					['get', 'render_height'],
-					0,
-					'#aaccbb',
-					200,
-					'royalblue',
-					400,
-					'purple',
-				],
-				'fill-extrusion-height': [
-					'interpolate',
-					['linear'],
-					['zoom'],
-					14,
-					0,
-					15,
-					['get', 'render_height'],
-				],
-				'fill-extrusion-base': [
-					'case',
-					['>=', ['get', 'zoom'], 14],
-					['get', 'render_min_height'],
-					0,
-				],
-			}}
-		/>
-	{/if}
-</MapLibre>
+		{#if is3d.state}
+			<FillExtrusionLayer
+				source="carto"
+				sourceLayer="building"
+				minzoom={14}
+				filter={['!=', ['get', 'hide_3d'], true]}
+				paint={{
+					'fill-extrusion-color': [
+						'interpolate',
+						['linear'],
+						['get', 'render_height'],
+						0,
+						'#aaccbb',
+						200,
+						'royalblue',
+						400,
+						'purple',
+					],
+					'fill-extrusion-height': [
+						'interpolate',
+						['linear'],
+						['zoom'],
+						14,
+						0,
+						15,
+						['get', 'render_height'],
+					],
+					'fill-extrusion-base': [
+						'case',
+						['>=', ['get', 'zoom'], 14],
+						['get', 'render_min_height'],
+						0,
+					],
+				}}
+			/>
+		{/if}
+	</MapLibre>
+</div>
 
 <style>
-.maplibregl-popup-content {
-  background: #18181b !important; /* Tailwind's bg-zinc-900 */
-  color: #fff !important;
-  border-radius: 0.5rem;
+@keyframes breathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 0.75;
+  }
+}
+
+.breathe {
+  animation: breathe 1.5s ease-in-out infinite;
 }
 </style>
