@@ -255,7 +255,7 @@
 					{/if}
 				</div>
 				<div class="grid grid-cols-1 md:grid-cols-4 gap-2 justify-center">
-					<Card title={"Mean dBA Level"} value={`${session.meanNoiseSession} dBA`} icon="dba" />
+					<Card title={"Session's Mean dBA Level"} value={`${session.meanNoiseSession} dBA`} icon="dba" />
 					<Card title={"Timeframe"} value={`${session.startTimes[0]} - ${session.startTimes[session.startTimes.length - 1]}`} icon="time" />
 					<Card title={"Quietest Time"} value={getTimeAndLevel("min", session.data, session.startTimes)[0]} adtl={String(getTimeAndLevel("min", session.data, session.startTimes)[1]) + ' dBA'} icon="quiet" />
 					<Card title={"Loudest Time"} value={getTimeAndLevel("max", session.data, session.startTimes)[0]} adtl={String(getTimeAndLevel("max", session.data, session.startTimes)[1]) + ' dBA'} icon="loud" />
