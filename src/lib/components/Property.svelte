@@ -2,17 +2,21 @@
 	const props = $props();
 
 	let dbClass = $state('');
-	let dbText = $state('');
+	let dbText = $derived(props.val);
 	if (props.attr === 'Mean dBA level')
-		if (props.val <= 60) {
+		if (props.val === 0) {
+			dbClass = 'text-black';
+			dbText = 'No Data'
+		}
+		else if (props.val <= 60) {
 			dbClass = 'text-quiet-green';
-			dbText = ' dBA (Quiet)';
+			dbText = `${props.val} dBA (Quiet)`;
 		} else if (props.val > 60 && props.val < 69) {
 			dbClass = 'text-loud-orange';
-			dbText = ' dBA (Loud)';
+			dbText = `${props.val} dBA (Loud)`;
 		} else {
 			dbClass = 'text-very-loud-red';
-			dbText = ' dBA (Very Loud)';
+			dbText = `${props.val} dBA (Very Loud)`;
 		}
 </script>
 
@@ -23,7 +27,7 @@
 			{@const [start, end] = props.val}
 			<span class="font-semibold {dbClass}">{start} to {end}</span>
 		{:else}
-			<span class="font-semibold {dbClass}">{props.val + dbText}</span>
+			<span class="font-semibold {dbClass}">{dbText}</span>
 		{/if}
 	</p>
 </div>
